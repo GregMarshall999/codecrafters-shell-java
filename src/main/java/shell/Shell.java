@@ -1,5 +1,9 @@
 package shell;
 
+import shell.command.Command;
+import shell.cycler.REPL;
+import shell.cycler.REPLOperator;
+
 public class Shell {
     private static final REPL REPL = new REPLOperator();
 
@@ -10,9 +14,8 @@ public class Shell {
     public static void run(String[] args) {
         while(ShellState.isLooping()) {
             REPL.displayPrompt();
-            String command = REPL.parseCommand();
-            Operation operation = REPL.interpretCommand(command);
-            REPL.executeOperation(operation);
+            Command command = REPL.parseCommand();
+            REPL.interpretCommand(command);
         }
     }
 }

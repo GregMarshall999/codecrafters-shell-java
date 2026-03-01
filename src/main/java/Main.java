@@ -1,8 +1,6 @@
-import java.util.Scanner;
-
-public class Main {
-    public static void main(String[] args) throws Exception {
-        // TODO: Uncomment the code below to pass the first stage
-        System.out.print("$ ");
-    }
+void main() throws Exception {
+    Scanner scanner = new Scanner(System.in);
+    IO.print("$ ");
+    String command = scanner.nextLine();
+    IO.println(command + ": command not found");
 }

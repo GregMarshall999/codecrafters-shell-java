@@ -3,5 +3,6 @@ package shell;
 public interface REPL {
     void displayPrompt();
     String parseCommand();
-    void errorWarn(String command);
+    Operation interpretCommand(String command);
+    void executeOperation(Operation operation);
 }

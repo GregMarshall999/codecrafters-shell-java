@@ -13,11 +13,18 @@ public class REPLOperator implements REPL {
     @Override
     public String parseCommand() {
         return SCANNER.nextLine();
-
     }
 
     @Override
-    public void errorWarn(String command) {
-        System.out.println(command + ": command not found");
+    public Operation interpretCommand(String command) {
+        return switch (command) {
+            case "exit" -> ShellState::endProcess;
+            default -> () -> System.out.println(command + ": command not found");
+        };
+    }
+
+    @Override
+    public void executeOperation(Operation operation) {
+        operation.execute();
     }
 }

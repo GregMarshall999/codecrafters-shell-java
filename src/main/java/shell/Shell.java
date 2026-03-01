@@ -8,10 +8,11 @@ public class Shell {
     }
 
     public static void run(String[] args) {
-        while(true) {
+        while(ShellState.isLooping()) {
             REPL.displayPrompt();
             String command = REPL.parseCommand();
-            REPL.errorWarn(command);
+            Operation operation = REPL.interpretCommand(command);
+            REPL.executeOperation(operation);
         }
     }
 }

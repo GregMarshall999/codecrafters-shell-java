@@ -20,4 +20,8 @@ public class ShellState {
     public static String getCurrentDirectory() {
         return userDirectory;
     }
+
+    public static void changeCurrentDirectory(String directory) {
+        userDirectory = directory;
+    }
 }

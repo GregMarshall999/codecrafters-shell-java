@@ -7,6 +7,13 @@ import shell.tool.ShellState;
 import java.io.File;
 
 public enum BuiltIn {
+    CD(arguments -> {
+        if(arguments.length >= 1) {
+            File d = new File(arguments[0]);
+            if(d.isDirectory()) ShellState.changeCurrentDirectory(d.getAbsolutePath());
+            else System.out.println("cd: " + arguments[0] + ": No such file or directory");
+        }
+    }),
     ECHO(arguments -> {
         for (String s : arguments) {
             System.out.print(s + " ");

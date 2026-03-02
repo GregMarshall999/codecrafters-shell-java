@@ -23,9 +23,9 @@ public enum BuiltIn {
                 boolean commandFound = false;
                 File file;
                 for (String directory : ShellEnv.getPathDirectories()) {
-                    file = new File(directory, arguments[0] + ".exe"); //TODO: might clash with non windows OS
+                    file = new File(directory, arguments[0] + ShellEnv.getSystemOS().getExtension());
                     if(file.exists() && file.canExecute()) {
-                        System.out.println(arguments[0] + " is " + directory + arguments[0]);
+                        System.out.println(arguments[0] + " is " + file.getAbsolutePath());
                         commandFound = true;
                         break;
                     }

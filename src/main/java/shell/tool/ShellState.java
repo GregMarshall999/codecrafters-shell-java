@@ -3,6 +3,8 @@ package shell.tool;
 public class ShellState {
     private static boolean executionLoop = true;
 
+    private static String userDirectory = System.getProperty("user.dir");
+
     private ShellState() {
         /* This utility class should not be instantiated */
     }
@@ -13,5 +15,9 @@ public class ShellState {
 
     public static void endProcess() {
         executionLoop = false;
+    }
+
+    public static String getCurrentDirectory() {
+        return userDirectory;
     }
 }

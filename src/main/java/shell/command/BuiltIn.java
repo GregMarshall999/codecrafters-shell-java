@@ -14,6 +14,7 @@ public enum BuiltIn {
         System.out.println();
     }),
     EXIT(_ -> ShellState.endProcess()),
+    PWD(_ -> System.out.println(ShellState.getCurrentDirectory())),
     TYPE(arguments -> {
         if(arguments.length >= 1) {
             try {

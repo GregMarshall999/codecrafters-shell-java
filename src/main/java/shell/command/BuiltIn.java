@@ -1,7 +1,10 @@
 package shell.command;
 
+import shell.ShellEnv;
 import shell.tool.Operation;
 import shell.ShellState;
+
+import java.io.File;
 
 public enum BuiltIn {
     ECHO(arguments -> {
@@ -17,7 +20,18 @@ public enum BuiltIn {
                 BuiltIn.valueOf(arguments[0].toUpperCase());
                 System.out.println(arguments[0] + " is a shell builtin");
             } catch (IllegalArgumentException _) {
-                System.out.println(arguments[0] + ": not found");
+                boolean commandFound = false;
+                File file;
+                for (String directory : ShellEnv.getPathDirectories()) {
+                    file = new File(directory, arguments[0] + ".exe"); //TODO: might clash with non windows OS
+                    if(file.exists() && file.canExecute()) {
+                        System.out.println(arguments[0] + " is " + directory + arguments[0]);
+                        commandFound = true;
+                        break;
+                    }
+                }
+
+                if(!commandFound) System.out.println(arguments[0] + ": not found");
             }
         }
     });

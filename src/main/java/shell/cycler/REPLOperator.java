@@ -2,7 +2,10 @@ package shell.cycler;
 
 import shell.command.Command;
 import shell.command.BuiltIn;
+import shell.tool.ShellEnv;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -33,7 +36,23 @@ public class REPLOperator implements REPL {
             BuiltIn builtIn = BuiltIn.valueOf(command.operator().toUpperCase());
             builtIn.execute(command.arguments());
         } catch (IllegalArgumentException _) {
-            System.out.println(command.operator() + ": command not found");
+            File file;
+            Process process = null;
+            for (String directory : ShellEnv.getPathDirectories()) {
+                file = new File(directory, command.operator() + ShellEnv.getSystemOS().getExtension());
+                if(file.exists() && file.canExecute()) {
+                    try {
+                        process = new ProcessBuilder(command.toStringArray()).inheritIO().start();
+                        process.waitFor();
+                        break;
+                    } catch (IOException | InterruptedException e) {
+                        System.out.println("Error during execution");
+                        process = null;
+                    }
+                }
+            }
+
+            if(process == null) System.out.println(command.operator() + ": command not found");
         }
     }
 }

@@ -3,6 +3,7 @@ package shell;
 import shell.command.Command;
 import shell.cycler.REPL;
 import shell.cycler.REPLOperator;
+import shell.tool.ShellState;
 
 public class Shell {
     private static final REPL REPL = new REPLOperator();

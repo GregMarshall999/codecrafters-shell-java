@@ -1,4 +1,4 @@
-package shell;
+package shell.tool;
 
 public class ShellState {
     private static boolean executionLoop = true;

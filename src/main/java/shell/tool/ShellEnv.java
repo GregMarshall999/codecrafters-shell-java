@@ -1,6 +1,4 @@
-package shell;
-
-import shell.tool.OS;
+package shell.tool;
 
 public class ShellEnv {
     private ShellEnv() {

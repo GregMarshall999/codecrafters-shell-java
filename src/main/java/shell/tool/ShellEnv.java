@@ -16,6 +16,20 @@ public class ShellEnv {
         };
     }
 
+    public static String getAbsoluteStarter() {
+        return switch (getSystemOS()) {
+            case LINUX, MAC_OS_X -> "/";
+            case WINDOWS_10, WINDOWS_11 -> "C:\\";
+        };
+    }
+
+    public static String getDirectorySplitter() {
+        return switch (getSystemOS()) {
+            case LINUX, MAC_OS_X -> "/";
+            case WINDOWS_10, WINDOWS_11 -> "\\\\";
+        };
+    }
+
     public static OS getSystemOS() {
         return OS.valueOf(OPERATING_SYSTEM.toUpperCase().replace(" ", "_"));
     }

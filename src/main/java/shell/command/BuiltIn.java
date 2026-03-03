@@ -9,9 +9,39 @@ import java.io.File;
 public enum BuiltIn {
     CD(arguments -> {
         if(arguments.length >= 1) {
-            File d = new File(arguments[0]);
-            if(d.isDirectory()) ShellState.changeCurrentDirectory(d.getAbsolutePath());
-            else System.out.println("cd: " + arguments[0] + ": No such file or directory");
+            boolean canChangeDirectory = true;
+            String directory;
+            if(arguments[0].startsWith("../")) {
+                int iterations = arguments[0].split("/").length;
+
+                String[] dirs = ShellState.getCurrentDirectory().split(ShellEnv.getDirectorySplitter());
+                if(dirs.length <= iterations) {
+                    System.out.println("Home has no parent directory");
+                    canChangeDirectory = false;
+                    directory = "";
+                }
+                else {
+                    StringBuilder builder = new StringBuilder();
+                    for (int i = 0; i < dirs.length - iterations; i++) {
+                        builder.append(dirs[i]);
+                        if(i < dirs.length - 2) builder.append(ShellEnv.getDirectorySplitter());
+                    }
+                    directory = builder.toString();
+                }
+            }
+            else if(arguments[0].startsWith(ShellEnv.getAbsoluteStarter())) {
+                directory = arguments[0];
+            }
+            else {
+                if(arguments[0].startsWith("./")) arguments[0] = arguments[0].substring(2);
+                directory = ShellState.getCurrentDirectory() + ShellEnv.getDirectorySplitter() + arguments[0];
+            }
+
+            if(canChangeDirectory) {
+                File d = new File(directory);
+                if(d.isDirectory()) ShellState.changeCurrentDirectory(d.getAbsolutePath());
+                else System.out.println("cd: " + directory + ": No such file or directory");
+            }
         }
     }),
     ECHO(arguments -> {

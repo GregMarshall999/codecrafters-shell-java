@@ -7,6 +7,7 @@ public class ShellEnv {
 
     private static final String PATH = System.getenv("PATH");
     private static final String OPERATING_SYSTEM = System.getProperty("os.name");
+    private static final String OS_HOME = System.getenv("HOME");
 
     public static String[] getPathDirectories() {
         return switch (getSystemOS()) {
@@ -32,5 +33,15 @@ public class ShellEnv {
 
     public static OS getSystemOS() {
         return OS.valueOf(OPERATING_SYSTEM.toUpperCase().replace(" ", "_"));
+    }
+
+    public static String getSystemHomeDir() {
+        if(OS_HOME == null) {
+            return switch (getSystemOS()) {
+                case LINUX, MAC_OS_X -> "/home/user";
+                case WINDOWS_10, WINDOWS_11 -> "C:\\";
+            };
+        }
+        return OS_HOME;
     }
 }

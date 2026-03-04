@@ -27,10 +27,14 @@ public enum BuiltIn {
                         if(i < dirs.length - 2) builder.append(ShellEnv.getDirectorySplitter());
                     }
                     directory = builder.toString();
+                    if(directory.equals("C:")) directory += "\\";
                 }
             }
             else if(arguments[0].startsWith(ShellEnv.getAbsoluteStarter())) {
                 directory = arguments[0];
+            }
+            else if(arguments[0].startsWith("~")) {
+                directory = ShellEnv.getSystemHomeDir();
             }
             else {
                 if(arguments[0].startsWith("./")) arguments[0] = arguments[0].substring(2);

@@ -1,5 +1,8 @@
 package shell.tool;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class ShellEnv {
     private ShellEnv() {
         /* This utility class should not be instantiated */
@@ -17,20 +20,6 @@ public class ShellEnv {
         };
     }
 
-    public static String getAbsoluteStarter() {
-        return switch (getSystemOS()) {
-            case LINUX, MAC_OS_X -> "/";
-            case WINDOWS_10, WINDOWS_11 -> "C:\\";
-        };
-    }
-
-    public static String getDirectorySplitter() {
-        return switch (getSystemOS()) {
-            case LINUX, MAC_OS_X -> "/";
-            case WINDOWS_10, WINDOWS_11 -> "\\\\";
-        };
-    }
-
     public static OS getSystemOS() {
         return OS.valueOf(OPERATING_SYSTEM.toUpperCase().replace(" ", "_"));
     }
@@ -43,5 +32,18 @@ public class ShellEnv {
             };
         }
         return OS_HOME;
+    }
+
+    public static Path resolvePath(String argument) {
+        Path current = Paths.get(ShellState.getCurrentDirectory());
+
+        if(argument.equals("~") || argument.startsWith("~/")) {
+            return Paths.get(getSystemHomeDir())
+                    .resolve(argument.substring(1))
+                    .normalize();
+        }
+
+        Path input = Paths.get(argument);
+        return (input.isAbsolute() ? input : current.resolve(input)).normalize();
     }
 }
